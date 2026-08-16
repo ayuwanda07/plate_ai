@@ -6,6 +6,7 @@
   html {
     scroll-behavior: smooth;
   }
+
   body {
     background-color: #F9FAF9;
     color: #1E293B;
@@ -38,6 +39,7 @@
 .glass-card-hover {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 .glass-card-hover:hover {
   background: rgba(255, 255, 255, 0.95);
   transform: translateY(-4px);

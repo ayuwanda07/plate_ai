@@ -3,6 +3,8 @@ import 'dotenv/config';
 import express from 'express';
 import multer from 'multer';
 import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const app = express();
 const upload = multer();
@@ -12,12 +14,13 @@ const ai = new GoogleGenAI({
 
 const model = 'gemini-3.5-flash';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 app.use(cors());
 app.use(express.json());
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) => {
-    res.send('New rest api')
-})
 
 app.post('/generate-text', async (req, res) => {
     try {
@@ -136,8 +139,14 @@ app.post('/api/chat', async (req, res) => {
         console.log(error);
         res.status(500).json({ message: error.message });
     }
-})
+});
+
+app.use(express.static(path.join(__dirname, '../client/dist')));
+
+app.get(/.*/, (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+});
 
 const PORT = 3000;
 
-app.listen(PORT, () => console.log('Server ready on http://localhost:${PORT}'));
+app.listen(PORT, () => console.log(`Server ready on http://localhost:${PORT}`));
